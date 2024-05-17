@@ -20,7 +20,7 @@ model Form {
   userId String
   createAt DateTime @default(now())
   published Boolean @default(false)
-  descrption String @default("")
+  description String @default("")
   name String
   visits Int @default(0)
   submissions Int @default(0)

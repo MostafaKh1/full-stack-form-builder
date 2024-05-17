@@ -1,5 +1,6 @@
 "use server"
 
+import { FormSchemaType, buttonFormSchema } from "@/dto/form"
 import prisma from "@/lib/db"
 import { currentUser } from "@clerk/nextjs/server"
 
@@ -29,11 +30,40 @@ export async function getFormStats() {
     let submissionsRat = 0
 
     if (visits > 0) {
-        submissionsRat = (submissions / visits) * 100
+        submissionsRat = (submissions / visits) * 100;
     }
-    const bounceRate  =  100 - submissionsRat
+    const bounceRate = 100 - submissionsRat;
 
     return {
         visits,submissions,submissionsRat,bounceRate
     }
+}
+
+
+
+export async function CreateForm(data: FormSchemaType) {
+    const validation = buttonFormSchema.safeParse(data)
+    if (!validation.success) {
+        throw new Error('form not valid')
+    }
+    const user =  await currentUser()
+
+    if (!user) {
+        throw new UserNotFound()
+    }
+    const {name,description} = data
+
+    const form = await prisma.form.create({
+        data: {
+            userId: user.id,
+            name,
+            description
+        }
+    }) 
+
+    if (!form) {
+        throw new Error("something went wrong")
+    }
+
+    return  (await form).id
 }

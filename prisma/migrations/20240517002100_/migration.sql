@@ -4,7 +4,7 @@ CREATE TABLE "Form" (
     "userId" TEXT NOT NULL,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "published" BOOLEAN NOT NULL DEFAULT false,
-    "descrption" TEXT NOT NULL DEFAULT '',
+    "description" TEXT NOT NULL DEFAULT '',
     "name" TEXT NOT NULL,
     "visits" INTEGER NOT NULL DEFAULT 0,
     "submissions" INTEGER NOT NULL DEFAULT 0,
