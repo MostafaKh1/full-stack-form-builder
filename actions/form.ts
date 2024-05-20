@@ -67,3 +67,38 @@ export async function CreateForm(data: FormSchemaType) {
 
     return  (await form).id
 }
+
+
+ export async function getForms() {
+    const user = await currentUser()
+    if (!user) {
+        throw new UserNotFound()
+    }
+
+    const data = prisma.form.findMany({
+        where: {
+            userId: user.id
+        },
+        orderBy: {
+            createAt: "desc"
+        }
+    })
+
+    return data
+} 
+
+
+export async function getFromById(id: number) {
+    const user = await currentUser()
+    if (!user) {
+        throw new UserNotFound()
+    }
+    const form = await prisma.form.findUnique({
+        where: {
+            userId: user.id,
+            id
+        }
+    })
+
+    return form
+}
