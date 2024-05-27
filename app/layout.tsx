@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
+import DesignerContextProvider from "@/components/designer/context/designer-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,17 +21,23 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-    <html lang="en">
-     
-      <body className={cn(inter.className, 'flex items-start justify-between')}>
-   
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <html lang="en">
+        <body
+          className={cn(inter.className, "flex items-start justify-between")}
+        >
+          <DesignerContextProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               {children}
               <Toaster />
             </ThemeProvider>
-        
+          </DesignerContextProvider>
         </body>
-    </html>
+      </html>
     </ClerkProvider>
   );
 }
