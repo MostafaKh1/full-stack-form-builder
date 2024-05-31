@@ -1,7 +1,7 @@
 import { Active, DragOverlay, useDndMonitor } from "@dnd-kit/core";
 import React, { useState } from "react";
 import { SideBarBtnElementDragOverlay } from "./sidebar-btn-element";
-import { ElementsType, FormElement, FormElements } from "./form-elemts";
+import { ElementsType, FormElement, FormElements } from "./form-elements";
 import useDesigner from "./hooks/useDesigner";
 
 function DragOverlayWrapper() {
@@ -28,6 +28,8 @@ function DragOverlayWrapper() {
     const type = draggedItem.data.current?.type as ElementsType;
     node = <SideBarBtnElementDragOverlay formElement={FormElements[type]} />;
   }
+
+  
   if (isDesignerElement) {
     const elementId = draggedItem.data?.current?.elementId;
     const element = elements.find((el) => el.id === elementId);
@@ -37,7 +39,7 @@ function DragOverlayWrapper() {
       const DesignerElementComponent =
         FormElements[element.type as ElementsType].designerComponent;
       node = (
-        <div className="flex bg-accent border rounded-md h-[120px] w-full py-2 px-4 opacity-80 pointer pointer-events-none" >
+        <div className="flex bg-accent border rounded-md h-[120px] w-full py-2 px-4 opacity-80 pointer pointer-events-none">
           <DesignerElementComponent elementInstance={element} />
         </div>
       );

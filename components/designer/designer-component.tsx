@@ -1,5 +1,5 @@
 import React from "react";
-import { FormElementsInstance } from "./form-elemts";
+import { FormElementsInstance } from "./form-elements";
 import { CustomInstance } from "../fields/text-field";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";

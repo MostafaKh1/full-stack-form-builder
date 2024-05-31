@@ -1,11 +1,12 @@
 "use client";
 
+import PropertiesComponents from "../designer/Properties-components";
 import DesignerComponent from "../designer/designer-component";
 import {
   ElementsType,
   FormElement,
   FormElementsInstance,
-} from "../designer/form-elemts";
+} from "../designer/form-elements";
 import { Type } from "lucide-react";
 
 const type: ElementsType = "TextField";
@@ -34,5 +35,5 @@ export const TextFieldFormElement: FormElement = {
   },
   designerComponent: DesignerComponent,
   formComponent: () => <div>form</div>,
-  propertiesComponent: () => <div>properties</div>,
+  propertiesComponent: PropertiesComponents,
 };

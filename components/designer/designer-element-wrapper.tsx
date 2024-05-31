@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FormElements, FormElementsInstance } from "./form-elemts";
+import { FormElements, FormElementsInstance } from "./form-elements";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import { Button } from "../ui/button";
 import { TrashIcon } from "@radix-ui/react-icons";
@@ -58,7 +58,7 @@ function DesignerElementWrapper({
         setIsMouseOver(false);
       }}
       onClick={(e) => {
-        e.stopPropagation()
+        e.stopPropagation();
         setSelectedElement(element);
       }}
     >
