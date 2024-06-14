@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { FormElementsInstance } from "./form-elements";
-import { CustomInstance } from "../fields/text-field";
+import { FormElementsInstance } from "../designer/form-elements";
+import { CustomInstance } from "./text-field";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { propertiesSchema } from "@/dto/properties";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useDesigner from "./hooks/useDesigner";
+import useDesigner from "../designer/hooks/useDesigner";
 import {
   Form,
   FormDescription,
@@ -34,7 +34,7 @@ export default function PropertiesComponents({
       label: element.extraAttributes.label,
       helperText: element.extraAttributes.helperText,
       placeholder: element.extraAttributes.placeholder,
-      require: element.extraAttributes.required,
+      required: element.extraAttributes.required,
     },
   });
 
@@ -43,14 +43,14 @@ export default function PropertiesComponents({
   }, [element, propsForm]);
 
   function applyChanges(values: PropertiesFormSchemaType) {
-    const { helperText, label, placeholder, require } = values;
+    const { helperText, label, placeholder, required } = values;
     updatedElement(element.id, {
       ...element,
       extraAttributes: {
         helperText,
         label,
         placeholder,
-        require,
+        required,
       },
     });
   }
@@ -123,7 +123,7 @@ export default function PropertiesComponents({
         />
         <FormField
           control={propsForm.control}
-          name="require"
+          name="required"
           render={({ field }) => (
             <FormItem className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
               <FormLabel>Require</FormLabel>

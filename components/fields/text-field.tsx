@@ -1,18 +1,19 @@
 "use client";
 
-import PropertiesComponents from "../designer/Properties-components";
-import DesignerComponent from "../designer/designer-component";
+import PropertiesComponents from "./Properties-components";
 import {
   ElementsType,
   FormElement,
   FormElementsInstance,
 } from "../designer/form-elements";
 import { Type } from "lucide-react";
+import FormComponent from "./form-component";
+import DesignerComponent from "./designer-component";
 
 const type: ElementsType = "TextField";
 
 const extraAttributes = {
-  label: "Text Filed",
+  label: "Label Value",
   helperText: "Helper Text",
   required: false,
   placeholder: "Enter Value..",
@@ -34,6 +35,17 @@ export const TextFieldFormElement: FormElement = {
     label: "Text Field",
   },
   designerComponent: DesignerComponent,
-  formComponent: () => <div>form</div>,
+  formComponent: FormComponent,
   propertiesComponent: PropertiesComponents,
+  validate: (
+    formElement: FormElementsInstance,
+    currentValue: string
+  ): boolean => {
+    const element = formElement as CustomInstance;
+    if (element.extraAttributes.required) {
+      return currentValue.length > 0;
+    }
+
+    return true;
+  },
 };

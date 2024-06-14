@@ -102,3 +102,81 @@ export async function getFromById(id: number) {
 
     return form
 }
+
+export async function updateFormContent(id: number, formContent: string) {
+    const user = await currentUser()
+
+    if (!user) {
+        throw new UserNotFound()
+    }
+
+    return prisma.form.update({
+        where: {
+            userId: user.id,
+            id
+        },
+        data: {
+        content: formContent
+       }
+    })
+}
+
+export async function publishedFrom(id: number) {
+    const user = await currentUser()
+    
+    if (!user) {
+        throw new UserNotFound()
+    }
+
+    return prisma.form.update({
+        where: {
+            userId: user.id,
+            id
+        },
+        data: {
+            published: true
+        }
+    })
+}
+
+export async function GetFormContentByUrl(formUrl: string) {
+
+
+    return prisma.form.update({
+        select: {
+           content: true
+        },
+        where: {
+            shareURL: formUrl
+        },
+        data: {
+            visits: {
+                increment: 1
+            }
+        }
+
+    })
+
+}
+
+export async function SubmitForm(formUrl: string, content: string) {
+    return prisma.form.update({
+
+        where: {
+            shareURL: formUrl,
+            published: true
+        },
+        data: {
+            submissions: {
+                increment: 1
+            },
+            fromSub: {
+                create: {
+                    content: content
+                }
+            }
+           
+        },
+    
+    })
+}

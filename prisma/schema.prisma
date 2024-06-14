@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model Form {
@@ -17,13 +17,14 @@ model Form {
   name        String
   visits      Int              @default(0)
   submissions Int              @default(0)
-  shareURL    String           @default(uuid())
-  fromSub     formSubmiision[]
+  content     String           @default("[]")
+  shareURL    String           @unique() @default(uuid())
+  fromSub     formSubmission[]
 
   @@unique([name, userId])
 }
 
-model formSubmiision {
+model formSubmission {
   id       Int      @id @default(autoincrement())
   createAt DateTime @default(now())
   formId   Int

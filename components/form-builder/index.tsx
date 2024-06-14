@@ -1,6 +1,6 @@
 "use client";
 import { Form } from "@prisma/client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PreviewDialogBtn from "./preview-dialog-btn";
 import SaveFileBtn from "./save-file-btn";
 import PublishedBtn from "./published-btn";
@@ -13,8 +13,14 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import DragOverlayWrapper from "../designer/drag-overlay-wrapper";
+import useDesigner from "../designer/hooks/useDesigner";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import FormPublishedInfo from "./form-published-info";
 
 function FormBuilder({ form }: { form: Form }) {
+  const { setElements } = useDesigner();
+  const [ready, setReady] = useState<boolean>(false);
+  const shareUrl = `${window.location.origin}/submit/${form.shareURL}`;
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint: {
       distance: 10,
@@ -29,6 +35,27 @@ function FormBuilder({ form }: { form: Form }) {
   });
 
   const sensors = useSensors(mouseSensor, touchSensor);
+
+  useEffect(() => {
+    if (ready) return;
+    setElements(JSON.parse(form.content));
+    const readyTimeout = setTimeout(() => {
+      setReady(true);
+    }, 800);
+
+    return clearTimeout(readyTimeout);
+  }, [form, setElements, ready]);
+
+  if (form.published) {
+    return <FormPublishedInfo shareUrl={shareUrl} fromId={form.id} />;
+  }
+
+  if (!ready) {
+    <div className="flex flex-col justify-center items-center w-full h-full">
+      return <ReloadIcon className="animate-spin w-12 h-12" />
+    </div>;
+  }
+
   return (
     <DndContext sensors={sensors}>
       <main className="flex flex-col w-full">
@@ -42,8 +69,8 @@ function FormBuilder({ form }: { form: Form }) {
             <PreviewDialogBtn />
             {!form.published && (
               <>
-                <SaveFileBtn />
-                <PublishedBtn />
+                <SaveFileBtn id={form.id} />
+                <PublishedBtn id={form.id} />
               </>
             )}
           </div>
